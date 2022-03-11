@@ -286,3 +286,7 @@ The output should be the **same** as the above _Leaderboard_ GUI:
 ![Screenshot](docs/azure-cli-psql.png)
 
 **Great job!** You've successfully deployed the Quarkus app to ARO with connecting to Azure PostgreSQL server.
+
+In case you need to delete ARO for the cost saving after the demo, follow up on this tutorial:
+
+* [Tutorial: Delete an Azure Red Hat OpenShift 4 cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-delete-cluster)
