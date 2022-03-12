@@ -287,6 +287,73 @@ The output should be the **same** as the above _Leaderboard_ GUI:
 
 **Great job!** You've successfully deployed the Quarkus app to ARO with connecting to Azure PostgreSQL server.
 
+## 3. (Optional) Deploy to Serverless Functions on Azure Red Hat OpenShift (ARO)
+
+Quarkus provides **Funqy** extensions to create a portable Java API for deployable functions in multiple serverless platforms such as OpenShift Serverless (Knative), AWS Lambda, Azure Functions, Google Cloud Functions. The main difference between Quarkus functions on ARO and direct Azure Functions is that you can build and deploy a native executable as the serverless function for faster cold starts and tiny memory footprints.
+
+If you haven't installed the OpenShift Serverless ane Knative Serving CR yet, find more information as below:
+
+* [Installing the OpenShift Serverless Operator](https://docs.openshift.com/container-platform/4.10/serverless/install/install-serverless-operator.html)
+* [Installing Knative Serving](https://docs.openshift.com/container-platform/4.10/serverless/install/installing-knative-serving.html)
+
+You should see the deployed pods when you have successfully installed the OpenShift Serverless:
+
+![Screenshot](docs/openshift-serverless-operator.png)
+
+**Update** the following values in `src/main/resources/application.properties` to keep the existing score data and deploy the application as the serverless function:
+
+```
+%prod.quarkus.hibernate-orm.database.generation=update
+%prod.quarkus.kubernetes.deployment-target=knative
+```
+
+**Uncomment** the following variables in `src/main/resources/application.properties`:
+
+```
+%prod.quarkus.container-image.group=microsweeper-quarkus
+%prod.quarkus.container-image.registry=image-registry.openshift-image-registry.svc:5000
+```
+
+_Note_ that if you want to build a native executables on `macOS`, add the following configuration to use Linux binary file format:
+
+```
+%prod.quarkus.native.container-build=true
+```
+
+Before the build, delete existing `microsweeper` application by the following `oc` command:
+
+```
+oc delete all --all
+```
+
+Build the native executables then deploy it to ARO. Run the following Quarkus CLI which will build and deploy using the OpenShift extension:
+
+```
+$ quarkus build --no-tests --native
+```
+
+The output should end with `BUILD SUCCESS`.
+
+Go back to the _Topology_ view, edit labels to add Quarkus icon. Click on microsweeper **REV** then select **Edit Labels** in _Actions_ drop box:
+
+![Screenshot](docs/microsweeper-serverless.png)
+
+Add this label and click on `Save`:
+
+```
+app.openshift.io/runtime=quarkus
+```
+
+The pod might scale down to `zero` if you didn't send traffic in `30` seconds. Let's access the Microsweeper game by clicking on the `Open URL` link. It triggers knative to spin up the pod again automatically, and will shut it down 30 seconds later:
+
+![Screenshot](docs/microsweeper-serverless-up.png)
+
+You will see the same scores in the Leaderboard as the above scores because the Azure PostgreSQL database is running on Azure cloud:
+
+![Screenshot](docs/microsweeper-serverless-board.png)
+
+## 4. (Optional) Delete Azure Red Hat OpenShift (ARO) cluster
+
 In case you need to delete ARO for the cost saving after the demo, follow up on this tutorial:
 
 * [Tutorial: Delete an Azure Red Hat OpenShift 4 cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-delete-cluster)
