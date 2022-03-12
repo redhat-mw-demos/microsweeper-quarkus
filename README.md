@@ -289,7 +289,7 @@ The output should be the **same** as the above _Leaderboard_ GUI:
 
 **Great job!** You've successfully deployed the Quarkus app to ARO with connecting to Azure PostgreSQL server.
 
-## 3. (Optional) Deploy to Serverless Functions on Azure Red Hat OpenShift (ARO)
+## 3. (Optional) Deploy to Serverless Functions on Azure Red Hat OpenShift
 
 Quarkus provides **Funqy** extensions to create a portable Java API for deployable functions in multiple serverless platforms such as OpenShift Serverless (Knative), AWS Lambda, Azure Functions, Google Cloud Functions. The main difference between Quarkus functions on ARO and direct Azure Functions is that you can build and deploy a native executable as the serverless function for faster cold starts and tiny memory footprints.
 
@@ -354,7 +354,7 @@ You will see the same scores in the Leaderboard as the above scores because the 
 
 ![Screenshot](docs/microsweeper-serverless-board.png)
 
-## 4. (Optional) Delete Azure Red Hat OpenShift (ARO) cluster
+## 4. (Optional) Delete Azure Red Hat OpenShift cluster
 
 In case you need to delete ARO for the cost saving after the demo, follow up on this tutorial:
 
