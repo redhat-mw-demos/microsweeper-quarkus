@@ -2,9 +2,9 @@
 
 This demo uses a number of cloud technologies to implement a simple game from the earlier days of computing: Minesweeper!
 
-Watch the demo video that walk you through the instruction step by step:
+Watch the demo video that walks you through the instructions step by step:
 
-[![Microsweeper Demo with Quarkus on Azure Red Hat OpenShift](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ARO/docs/thumbnail.png)](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on Azure Red Hat OpenShift")
+[![Microsweeper Demo with Quarkus on Azure Red Hat OpenShift](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ARO/docs/thumbnail.png){:target="_blank"}](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on Azure Red Hat OpenShift")
 
 # Table of Contents
 1. [Test your Quarkus App Locally](#TestApplicationLocally)
