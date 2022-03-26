@@ -129,6 +129,8 @@ Note that be sure to key the following value in the setting:
 * Admin username - `quarkus`
 * Password - `r3dh4t1!`
 
+![Screenshot](docs/create-single-server.png)
+
 ### Create a **score** database in PostgreSQL
 
 The PostgreSQL server that you created earlier is empty. It doesn't have any database that you can use with the Quarkus application. Create a new database called `score` by using the following command:
@@ -139,8 +141,6 @@ az postgres db create \
   --name score \
   --server-name microsweeper-database
 ```
-
-![Screenshot](docs/create-single-server.png)
 
 ### Deploy a Quarkus App to ARO<a name="DeployQuarkusApp"></a>
 
