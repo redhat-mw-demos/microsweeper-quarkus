@@ -14,7 +14,7 @@ Technologies include:
 * Application Deployment on [Azure Red Hat OpenShift (ARO)](https://azure.microsoft.com/en-us/services/openshift/)
 * Datastore to store scores on [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/services/postgresql/) 
 
-## Test your Quarkus App Locally<a name="TestApplicationLocally"></a>
+## 1.Test your Quarkus App Locally<a name="TestApplicationLocally"></a>
 
 Quarkus supports the automatic provisioning of unconfigured services in development and test mode. We refer to this capability as [Dev Services](https://quarkus.io/guides/dev-services#databases). From a developer’s perspective this means that if you include an extension and don’t configure it then Quarkus will automatically start the relevant service (usually using _Testcontainers_ behind the scenes) and wire up your application to use this service. 
 
@@ -105,7 +105,7 @@ content-length: 253
 
 Note that you can use `curl` command-line tool to access the RESTful API by `curl localhost:8080/api/scoreboard`.
 
-## Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)<a name="DeployQuarkusApp"></a>
+## 2.Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)<a name="DeployQuarkusApp"></a>
 
 Azure Red Hat OpenShift provides highly available, fully managed OpenShift clusters on demand, monitored and operated jointly by Microsoft and Red Hat. Kubernetes is at the core of Red Hat OpenShift. OpenShift brings added-value features to complement Kubernetes, making it a turnkey container platform as a service (PaaS) with a significantly improved developer and operator experience. If you haven't installed ARO cluster with your own Azure account, take a moment to follow up on the below documents: 
 
@@ -303,7 +303,7 @@ The output should be the **same** as the above _Leaderboard_ GUI:
 
 **Great job!** You've successfully deployed the Quarkus app to ARO with connecting to Azure PostgreSQL server.
 
-## Deploy to Serverless Functions on Azure Red Hat OpenShift<a name="DeployServerlessFunction"></a>
+## 3.Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift<a name="DeployServerlessFunction"></a>
 
 Quarkus provides **Funqy** extensions to create a portable Java API for deployable functions in multiple serverless platforms such as OpenShift Serverless (Knative), AWS Lambda, Azure Functions, Google Cloud Functions. The main difference between Quarkus functions on ARO and direct Azure Functions is that you can build and deploy a native executable as the serverless function for faster cold starts and tiny memory footprints.
 
