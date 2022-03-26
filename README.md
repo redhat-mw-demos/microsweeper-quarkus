@@ -1,4 +1,4 @@
-# Red Hat Microsweeper demo with Quarkus on Azure Red Hat OpenShift (ARO)
+# Red Hat Microsweeper Demo with Quarkus on Azure Red Hat OpenShift (ARO)
 
 This demo uses a number of cloud technologies to implement a simple game from the earlier days of computing: Minesweeper!
 
