@@ -372,7 +372,7 @@ You will see the same scores in the Leaderboard as the above scores because the 
 
 ![Screenshot](docs/microsweeper-serverless-board.png)
 
-## 4. (Optional) Delete Azure Red Hat OpenShift cluster
+### (Optional) Delete Azure Red Hat OpenShift cluster
 
 In case you need to delete ARO for the cost saving after the demo, follow up on this tutorial:
 
