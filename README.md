@@ -2,8 +2,6 @@
 
 This demo uses a number of cloud technologies to implement a simple game from the earlier days of computing: Minesweeper!
 
-![Screenshot](docs/microsweeper.png)
-
 # Table of Contents
 1. [Test your Quarkus App Locally](#TestApplicationLocally)
 2. [Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)](#DeployQuarkusApp)
