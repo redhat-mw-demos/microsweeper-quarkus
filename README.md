@@ -7,9 +7,12 @@ Watch the demo video that walks you through the instructions step by step:
 [![Microsweeper Demo with Quarkus on Azure Red Hat OpenShift](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ARO/docs/thumbnail.png)](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on Azure Red Hat OpenShift")
 
 # Table of Contents
+
 1. [Test your Quarkus App Locally](#TestApplicationLocally)
 2. [Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)](#DeployQuarkusApp)
 3. [Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift](#DeployServerlessFunction)
+
+![Screenshot](docs/demo-arch.svg)
 
 Technologies include:
 
