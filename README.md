@@ -4,6 +4,11 @@ This demo uses a number of cloud technologies to implement a simple game from th
 
 ![Screenshot](docs/microsweeper.png)
 
+# Table of Contents
+1. [Test your Quarkus App Locally](#TestApplicationLocally)
+2. [Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)](#DeployQuarkusApp)
+3. [(Optional) Deploy to Serverless Functions on Azure Red Hat OpenShift](#DeployServerlessFunction)
+
 Technologies include:
 
 * JQuery-based Minesweeper written by [Nick Arocho](http://www.nickarocho.com/) and [available on GitHub](https://github.com/nickarocho/minesweeper).
@@ -11,7 +16,7 @@ Technologies include:
 * Application Deployment on [Azure Red Hat OpenShift (ARO)](https://azure.microsoft.com/en-us/services/openshift/)
 * Datastore to store scores on [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/services/postgresql/) 
 
-## 1. Test Application Locally
+## Test your Quarkus App Locally<a name="TestApplicationLocally"></a>
 
 Quarkus supports the automatic provisioning of unconfigured services in development and test mode. We refer to this capability as [Dev Services](https://quarkus.io/guides/dev-services#databases). From a developer’s perspective this means that if you include an extension and don’t configure it then Quarkus will automatically start the relevant service (usually using _Testcontainers_ behind the scenes) and wire up your application to use this service. 
 
@@ -102,7 +107,7 @@ content-length: 253
 
 Note that you can use `curl` command-line tool to access the RESTful API by `curl localhost:8080/api/scoreboard`.
 
-## 2. Deploy to Azure Red Hat OpenShift (ARO)
+## Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)<a name="DeployQuarkusApp"></a>
 
 Azure Red Hat OpenShift provides highly available, fully managed OpenShift clusters on demand, monitored and operated jointly by Microsoft and Red Hat. Kubernetes is at the core of Red Hat OpenShift. OpenShift brings added-value features to complement Kubernetes, making it a turnkey container platform as a service (PaaS) with a significantly improved developer and operator experience. If you haven't installed ARO cluster with your own Azure account, take a moment to follow up on the below documents: 
 
@@ -126,9 +131,20 @@ Note that be sure to key the following value in the setting:
 * Admin username - `quarkus`
 * Password - `r3dh4t1!`
 
+### Create a **score** database in PostgreSQL
+
+The PostgreSQL server that you created earlier is empty. It doesn't have any database that you can use with the Quarkus application. Create a new database called `score` by using the following command:
+
+```shell
+az postgres db create \
+  --resource-group $RESOURCE_GROUP \
+  --name score \
+  --server-name microsweeper-database
+```
+
 ![Screenshot](docs/create-single-server.png)
 
-### Deploy a Quarkus App to ARO
+### Deploy a Quarkus App to ARO<a name="DeployQuarkusApp"></a>
 
 Go to `All resources` in Azure portal. Then, click on `OpenShift Cluster` resource:
 
@@ -265,7 +281,7 @@ The output should look like:
 ]
 ```
 
-### Connect to the Azure PostgeSQL server with psql using Azure Cloud Shell
+### Connect to the Azure PostgreSQL server using Azure Cloud Shell
 
 Open Azure Cloud Shell in the Azure portal by selecting the icon on the upper-left side:
 
@@ -289,7 +305,7 @@ The output should be the **same** as the above _Leaderboard_ GUI:
 
 **Great job!** You've successfully deployed the Quarkus app to ARO with connecting to Azure PostgreSQL server.
 
-## 3. (Optional) Deploy to Serverless Functions on Azure Red Hat OpenShift
+## Deploy to Serverless Functions on Azure Red Hat OpenShift<a name="DeployServerlessFunction"></a>
 
 Quarkus provides **Funqy** extensions to create a portable Java API for deployable functions in multiple serverless platforms such as OpenShift Serverless (Knative), AWS Lambda, Azure Functions, Google Cloud Functions. The main difference between Quarkus functions on ARO and direct Azure Functions is that you can build and deploy a native executable as the serverless function for faster cold starts and tiny memory footprints.
 
