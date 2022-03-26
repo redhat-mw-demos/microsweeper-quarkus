@@ -7,7 +7,7 @@ This demo uses a number of cloud technologies to implement a simple game from th
 # Table of Contents
 1. [Test your Quarkus App Locally](#TestApplicationLocally)
 2. [Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)](#DeployQuarkusApp)
-3. [(Optional) Deploy to Serverless Functions on Azure Red Hat OpenShift](#DeployServerlessFunction)
+3. [Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift](#DeployServerlessFunction)
 
 Technologies include:
 
