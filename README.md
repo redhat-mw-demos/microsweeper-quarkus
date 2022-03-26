@@ -4,7 +4,9 @@ This demo uses a number of cloud technologies to implement a simple game from th
 
 Watch the demo video that walk you through the instruction step by step:
 
-<a href="https://youtu.be/zYSQdX-tVsE" target="_blank" rel="noopener"><span>Example Text</span> </a>.
+<figure class="video_container">
+  <iframe src="https://youtu.be/zYSQdX-tVsE" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
 
 
 <a href="https://youtu.be/zYSQdX-tVsE" target="_blank"><img src="https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ARO/docs/thumbnail.png" /></a>
