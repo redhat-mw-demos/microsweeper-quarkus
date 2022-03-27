@@ -12,7 +12,7 @@ Watch the demo video that walks you through the instructions step by step:
 2. [Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)](#DeployQuarkusApp)
 3. [Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift](#DeployServerlessFunction)
 
-![Screenshot](docs/demo-arch.svg)
+![Screenshot](docs/demo-arch.png)
 
 Technologies include:
 
