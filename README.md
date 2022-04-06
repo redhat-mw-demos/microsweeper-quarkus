@@ -9,7 +9,7 @@ Watch the demo video that walks you through the instructions step by step:
 # Table of Contents
 
 1. [Test your Quarkus App Locally](#TestApplicationLocally)
-2. [Deploy the Quarkus App to Red Hat OpenShift Service on AWS with AWS DynamoDB](#DeployQuarkusApp)
+2. [Deploy the Quarkus App to Red Hat OpenShift Service on AWS](#DeployQuarkusApp)
 3. [Integrate with Amazon Simple Email Service](#SendSES)
 
 ![Screenshot](docs/rosa-demo-arch.png)
@@ -204,7 +204,7 @@ Note that you can use `curl` command line interface to access the RESTful API by
 
 Stop the Quarkus dev mode by pressing `CTRL-C`.
 
-## 2. Deploy the Quarkus App to  Red Hat OpenShift Service on AWS with AWS DynamoDB<a name="DeployQuarkusApp"></a>
+## 2. Deploy the Quarkus App to  Red Hat OpenShift Service on AWS<a name="DeployQuarkusApp"></a>
 
 Red Hat OpenShift Service on AWS (ROSA) is a [fully-managed](https://cloud.redhat.com/learn/topics/managed-services?hsLang=en-us) and jointly supported Red Hat OpenShift offering that combines the power of Red Hat OpenShift, the industry’s most comprehensive enterprise Kubernetes platform, and the AWS public cloud. 
 
