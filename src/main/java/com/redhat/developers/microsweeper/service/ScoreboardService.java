@@ -2,34 +2,28 @@ package com.redhat.developers.microsweeper.service;
 
 import com.redhat.developers.microsweeper.model.Score;
 
-import io.micrometer.core.annotation.Timed;
-import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.Timer;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
-
-import java.util.List;
+import javax.inject.Inject;
 
 @ApplicationScoped
-public class ScoreboardService  {
+public class ScoreboardService extends AbstractService {
+
+    @Inject
+    DynamoDbClient dynamoDB;
 
     public List<Score> getScoreboard() {
-        return Score.listAll();
+        return dynamoDB.scanPaginator(scanRequest()).items().stream()
+                .map(Score::from)
+                .collect(Collectors.toList());
     }
 
-    @Transactional
-    @Timed(description = "How log to add a score", value = "scoreboard-timer")
     public void addScore(Score score) {
-        Timer timer = Metrics.globalRegistry.timer("example.prime.number.test");
-        timer.record(() -> {
-            Score.persist(score);
-        });
-    }
-
-    @Transactional
-    public Long clearScores() {
-        return Score.deleteAll();
+        dynamoDB.putItem(putRequest(score));
     }
 
 }

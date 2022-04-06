@@ -100,13 +100,13 @@ function buildTable() {
   var topRow = `
   <tr>
     <td class="menu" id="window-title-bar" colspan="${size}">
-      <div id="window-title"><img src="images/mine-menu-icon.png"> Minesweeper</div>
+      <div id="window-title"><img src="images/mine-menu-icon.png"> Microsweeper</div>
       <div id="window-controls"><img onclick="clearScores()" src="images/window-controls.png"></div>
     </td>
   <tr>
     <td class="menu" id="folder-bar" colspan="${size}">
-      <div id="folder1"><a href="https://github.com/nickarocho/minesweeper/blob/master/readme.md" target="blank">Read Me </a></div>
-      <div id="folder2"><a href="https://github.com/nickarocho/minesweeper" target="blank">Source Code</a></div>
+      <div id="folder1"><a href="https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ROSA/README.md" target="blank">Read Me </a></div>
+      <div id="folder2"><a href="https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ROSA" target="blank">Source Code</a></div>
       <div id="folder3"><input onchange="setCurrentName(this.value)" type="text" id="playerName" placeholder="Player Name..." width="50px"/></div>
     </td>
   </tr>
@@ -334,7 +334,6 @@ function render() {
         td.innerHTML = wrongBombImage;
       }
     });
-
     recordScore(currentName, elapsedTime, level, false);
   } else if (winner) {
     recordScore(currentName, elapsedTime, level, true);
@@ -344,7 +343,6 @@ function render() {
 };
 
 function recordScore(name, time, level, won) {
-
   let xhr = new XMLHttpRequest();
 
   xhr.open('POST', '/api/scoreboard');
