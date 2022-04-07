@@ -4,7 +4,7 @@ This demo uses a number of cloud technologies to implement a simple game from th
 
 Watch the demo video that walks you through the instructions step by step:
 
-[![Microsweeper Demo with Quarkus on Red Hat OpenShift Service on AWS](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ROSA/docs/thumbnail.png)](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on  Red Hat OpenShift Service on AWS")
+[![Microsweeper Demo with Quarkus on Red Hat OpenShift Service on AWS](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ROSA/docs/thumbnail.png)](https://youtu.be/UBDzHnDjc_g "Microsweeper Demo with Quarkus on  Red Hat OpenShift Service on AWS")
 
 # Table of Contents
 
@@ -444,6 +444,20 @@ In the same file, **uncomment** the `encrypt(score);` in the _addScore(Score sco
     public void addScore(Score score) throws Exception {
         scoreboardService.addScore(score);
         encrypt(score);
+    }
+```
+
+Take a look at the **encrypt** method to understand how Quarkus enables you to send emails to verified recipients through AWS SES. _(Don't copy the following code!_)
+
+```java
+    public void encrypt(Score score) {
+        logger.info("New receiver: " + score.getName());
+        ses.sendEmail(req -> req
+            .source(EMAIL_FROM_ADDRESS)
+            .destination(d -> d.toAddresses(EMAIL_TO_ADDRESS))
+            .message(msg -> msg
+                .subject(sub -> sub.data("[" + score.getName() + "] You've got a new score in Microsweeper!"))
+                .body(b -> b.text(txt -> txt.data("Congrats!!! " + score.getName() + " is just completed the Microsweeper with " + score.getLevel()))))).messageId();
     }
 ```
 
