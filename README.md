@@ -34,15 +34,15 @@ Quarkus also provides a command-line tool (CLI) for developers to create project
 Run the following command line to start Quarkus dev mode. It will automatically start a PostgreSQL container on your local container runtime (e.g. Docker or [Podman](https://podman.io/)):
 
 
-```
-$ quarkus dev
+```shell
+quarkus dev
 ```
 
 _Note_ that you can also use _Maven_ command-line tool (_mvn quarkus:dev_).
 
 The output should look like:
 
-```
+```shell
 __  ____  __  _____   ___  __ ____  ______ 
  --/ __ \/ / / / _ | / _ \/ //_/ / / / __/ 
  -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \   
@@ -71,13 +71,13 @@ Try playing the mine game! Then you will *scores* in the _Leaderboard_:
 
 Access the RESTful API (_/api/score_) to get all scores that store in the local PostgreSQL database. Run the following API testing client [HTTPie](https://httpie.io/) command-line tool: 
 
-```
-$ http :8080/api/scoreboard
+```shell
+http :8080/api/scoreboard
 ```
 
 The output should look like:
 
-```
+```shell
 HTTP/1.1 200 OK
 Content-Type: application/json
 content-length: 253
@@ -170,13 +170,13 @@ Quarkus also offers the ability to automatically generate OpenShift resources ba
 
 Add `quarkus-openshift` extension in Terminal:
 
-```
-$ quarkus ext add openshift
+```shell
+quarkus ext add openshift
 ```
 
 The output should look like:
 
-```
+```shell
 [SUCCESS] ✅  Extension io.quarkus:quarkus-openshift has been installed
 ```
 
@@ -190,7 +190,7 @@ By default Quarkus has three profiles, although it is possible to use as many as
 
 Let’s uncomment the following variables in `src/main/resources/application.properties`:
 
-```
+```yaml
 # Database configurations
 %prod.quarkus.datasource.db-kind=postgresql
 %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://microsweeper-database.postgres.database.azure.com:5432/score
@@ -217,7 +217,7 @@ Get the token from OpenShift web consol. Then, paste the `oc login` command-line
 
 The output should look like:
 
-```
+```shell
 Logged into "https://api.danieloh.eastus.aroapp.io:6443" as "YOUR-USERNAME" using the token provided.
 
 You have access to 68 projects, the list has been suppressed. You can list all projects with 'oc projects'
@@ -227,16 +227,16 @@ Using project "microsweeper-quarkus".
 
 Now let’s deploy the application itself. Run the following Quarkus CLI which will build and deploy using the OpenShift extension:
 
-```
-$ quarkus build --no-tests
+```shell
+quarkus build --no-tests
 ```
 
 The output should end with `BUILD SUCCESS`.
 
 Finally, make sure it’s actually done rolling out:
 
-```
-$ oc rollout status -w dc/microsweeper-appservice
+```shell
+oc rollout status -w dc/microsweeper-appservice
 ```
 
 Wait for that command to report `replication controller microsweeper-appservice-1 successfully rolled out` before continuing.
@@ -251,13 +251,13 @@ Click on the Route icon above (the arrow) to access the **Microsweeper** running
 
 Access the RESTful API (_/api/score_) to get all scores that store in the **Azure PostgreSQL database**. You need to replace with your own `ROUTE` url: 
 
-```
-$ http http://YOUR-ROUTE-URL/api/scoreboard
+```shell
+http http://YOUR-ROUTE-URL/api/scoreboard
 ```
 
 The output should look like:
 
-```
+```shell
 [
     {
         "id": 1,
@@ -294,13 +294,13 @@ Open Azure Cloud Shell in the Azure portal by selecting the icon on the upper-le
 
 Run the following command in the Azure Cloud Shell terminal. Replace values with `your server name` and admin user login name:
 
-```
+```shell
 psql --host=YOUR-POSTGRESQL-SERVER-NAME --port=5432 --username=quarkus@microsweeper-database --dbname=score
 ```
 
 Key the password (`r3dh4t1!`) in the prompt. Then, execute the following query to get all scores:
 
-```
+```shell
 select * from score;
 ```
 
@@ -325,34 +325,34 @@ You should see the deployed pods when you have successfully installed the OpenSh
 
 **Update** the following values in `src/main/resources/application.properties` to keep the existing score data and deploy the application as the serverless function:
 
-```
+```yaml
 %prod.quarkus.hibernate-orm.database.generation=update
 %prod.quarkus.kubernetes.deployment-target=knative
 ```
 
 **Uncomment** the following variables in `src/main/resources/application.properties`:
 
-```
+```yaml
 %prod.quarkus.container-image.group=microsweeper-quarkus
 %prod.quarkus.container-image.registry=image-registry.openshift-image-registry.svc:5000
 ```
 
 _Note_ that if you want to build a native executables on `macOS`, add the following configuration to use Linux binary file format:
 
-```
+```yaml
 %prod.quarkus.native.container-build=true
 ```
 
 Before the build, delete existing `microsweeper` application by the following `oc` command:
 
-```
+```shell
 oc delete all --all
 ```
 
 Build the native executables then deploy it to ARO. Run the following Quarkus CLI which will build and deploy using the OpenShift extension:
 
-```
-$ quarkus build --no-tests --native
+```shell
+quarkus build --no-tests --native
 ```
 
 The output should end with `BUILD SUCCESS`.
@@ -363,7 +363,7 @@ Go back to the _Topology_ view, edit labels to add Quarkus icon. Click on micros
 
 Add this label and click on `Save`:
 
-```
+```yaml
 app.openshift.io/runtime=quarkus
 ```
 

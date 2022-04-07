@@ -105,8 +105,8 @@ function buildTable() {
     </td>
   <tr>
     <td class="menu" id="folder-bar" colspan="${size}">
-      <div id="folder1"><a href="https://github.com/nickarocho/minesweeper/blob/master/readme.md" target="blank">Read Me </a></div>
-      <div id="folder2"><a href="https://github.com/nickarocho/minesweeper" target="blank">Source Code</a></div>
+      <div id="folder1"><a href="https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO#readme" target="blank">Read Me </a></div>
+      <div id="folder2"><a href="https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO" target="blank">Source Code</a></div>
       <div id="folder3"><input onchange="setCurrentName(this.value)" type="text" id="playerName" placeholder="Player Name..." width="50px"/></div>
     </td>
   </tr>
