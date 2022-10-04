@@ -100,7 +100,7 @@ function buildTable() {
   var topRow = `
   <tr>
     <td class="menu" id="window-title-bar" colspan="${size}">
-      <div id="window-title"><img src="images/mine-menu-icon.png"> Minesweeper</div>
+      <div id="window-title"><img src="images/mine-menu-icon.png"> Microsweeper</div>
       <div id="window-controls"><img onclick="clearScores()" src="images/window-controls.png"></div>
     </td>
   <tr>

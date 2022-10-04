@@ -1,24 +1,24 @@
-# Red Hat Microsweeper Demo with Quarkus on Azure Red Hat OpenShift (ARO)
+# Red Hat Microsweeper Demo with Quarkus on Azure Kubernetes Service (AKS)
 
 This demo uses a number of cloud technologies to implement a simple game from the earlier days of computing: Minesweeper!
 
 Watch the demo video that walks you through the instructions step by step:
 
-[![Microsweeper Demo with Quarkus on Azure Red Hat OpenShift](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/ARO/docs/thumbnail.png)](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on Azure Red Hat OpenShift")
+[![Microsweeper Demo with Quarkus on Azure Kubernetes Service](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/AKS/docs/thumbnail.png)](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on Azure Kubernetes Service")
 
 # Table of Contents
 
 1. [Test your Quarkus App Locally](#TestApplicationLocally)
-2. [Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)](#DeployQuarkusApp)
-3. [Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift](#DeployServerlessFunction)
+2. [Deploy the Quarkus App to Azure Kubernetes Service (AKS)](#DeployQuarkusApp)
+3. [Secure Database credential to Kubernetes Secrets](#SecureDBCreds)
 
-![Screenshot](docs/aro-demo-arch.png)
+![Screenshot](docs/aks-demo-arch.png)
 
 Technologies include:
 
 * JQuery-based Minesweeper written by [Nick Arocho](http://www.nickarocho.com/) and [available on GitHub](https://github.com/nickarocho/minesweeper).
 * Backend based on [Quarkus](https://quarkus.io) to persist scoreboard and provide a reactive frontend and backend connected to [Postgres](https://azure.microsoft.com/en-us/services/postgresql/).
-* Application Deployment on [Azure Red Hat OpenShift (ARO)](https://azure.microsoft.com/en-us/services/openshift/)
+* Application Deployment on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes)
 * Datastore to store scores on [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/services/postgresql/) 
 
 ## 1. Test your Quarkus App Locally<a name="TestApplicationLocally"></a>
@@ -51,9 +51,9 @@ __  ____  __  _____   ___  __ ____  ______
 
 ...
 
-INFO  [io.quarkus] (Quarkus Main Thread) microsweeper-appservice 1.0.0-SNAPSHOT on JVM (powered by Quarkus 2.7.4.Final) started in 9.631s. Listening on: http://localhost:8080
+INFO  [io.quarkus] (Quarkus Main Thread) microsweeper-appservice 1.0.0-SNAPSHOT on JVM (powered by Quarkus xx.xx.xx.Final) started in 9.631s. Listening on: http://localhost:8080
 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
-INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, hibernate-orm, hibernate-orm-panache, jdbc-postgresql, micrometer, narayana-jta, resteasy-reactive, resteasy-reactive-jsonb, smallrye-context-propagation, vertx]
+INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [agroal, cdi, hibernate-orm, hibernate-orm-panache, jdbc-postgresql, kubernetes, kubernetes-client, micrometer, narayana-jta, resteasy-reactive, resteasy-reactive-jsonb, smallrye-context-propagation, vertx]
 
 --
 Tests paused
@@ -112,19 +112,19 @@ content-length: 253
 
 Note that you can use `curl` command-line tool to access the RESTful API by `curl localhost:8080/api/scoreboard`.
 
-## 2. Deploy the Quarkus App to Azure Red Hat OpenShift (ARO)<a name="DeployQuarkusApp"></a>
+## 2. Deploy the Quarkus App to Azure Kubernetes Service (AKS)<a name="DeployQuarkusApp"></a>
 
-Azure Red Hat OpenShift provides highly available, fully managed OpenShift clusters on demand, monitored and operated jointly by Microsoft and Red Hat. Kubernetes is at the core of Red Hat OpenShift. OpenShift brings added-value features to complement Kubernetes, making it a turnkey container platform as a service (PaaS) with a significantly improved developer and operator experience. If you haven't installed ARO cluster with your own Azure account, take a moment to follow up on the below documents: 
+`Azure Kubernetes Service (AKS)` simplifies deploying a managed Kubernetes cluster in Azure by offloading the operational overhead to Azure. As a hosted Kubernetes service, Azure handles critical tasks, like health monitoring and maintenance. 
+
+If you haven't installed AKS cluster with your own Azure account, take a moment to follow up on the below documents: 
 
 * [Tutorial: Create an additional Azure subscription](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/create-subscription)
 * [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-* [Create an Azure Red Hat OpenShift 4 cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster)
+* [Quickstart: Deploy an Azure Kubernetes Service cluster using the Azure CLI](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli)
 
-_Note_ that Azure Red Hat OpenShift requires a minimum of `40` cores to create and run an OpenShift cluster. The default Azure resource quota for a new Azure subscription does not meet this requirement.
+### 2.1. Create an Azure Database for PostgreSQL
 
-### Create an Azure Database for PostgreSQL
-
-Let's say that ARO is our production environment to deploy the Microsweeper application. Also, We need to guarantee _data persistency_ regardless of randomly restarting an application container (_Microsweeper_) on the Kubernetes cluster. 
+Let's say that AKS is our production environment to deploy the *Microsweeper* application. Also, We need to guarantee _data persistency_ regardless of randomly restarting an application container (_Microsweeper_) on the Kubernetes cluster. 
 
 **Azure Database for PostgreSQL** is a managed service to run, manage, and scale highly available PostgreSQL databases in the Azure cloud. The following quickstart shows you how to create a single Azure Database for PostgreSQL server and connect to it.
 
@@ -138,9 +138,20 @@ Note that be sure to key the following value in the setting:
 
 ![Screenshot](docs/create-single-server.png)
 
-### Create a **score** database in PostgreSQL
+### 2.2 Create a **score** database in PostgreSQL
 
-The PostgreSQL server that you created earlier is empty. It doesn't have any database that you can use with the Quarkus application. Create a new database called `score` by using the following command:
+The PostgreSQL server that you created earlier is empty. It doesn't have any database that you can use with the Quarkus application. 
+
+Export your resource group using the following command: 
+
+> **_NOTE:_** You can run the following shell command using your local terminal or [Azure Cloud Shell](https://learn.microsoft.com/en-us/azure/cloud-shell/overview).
+
+```shell
+export RESOURCE_GROUP=YOUR_RESOURCE_GROUP
+export AKS_NAME=YOUR_AKS_NAME
+```
+
+Create a new database called `score` by using the following command:
 
 ```shell
 az postgres db create \
@@ -149,35 +160,81 @@ az postgres db create \
   --server-name microsweeper-database
 ```
 
-### Deploy a Quarkus App to ARO<a name="DeployQuarkusApp"></a>
+### 2.3. Create a new namespace in AKS
 
-Go to `All resources` in Azure portal. Then, click on `OpenShift Cluster` resource:
+Go to `All resources` in Azure portal. Then, click on `Kubernetes service` resource (e.g. _MyAKSCluster_).
 
-![Screenshot](docs/azure-openshift.png)
+![Screenshot](docs/aks-dashboard.png)
 
+The overview page shows up with all the detailed information about the Kubernetes service such as _Resource group_, _Kubernetes version_, _API server address_, and more.
 
-To access `OpenShift Web Console`, click on `OpenShift Console URL`.
-
-After you log in to the OpenShift console using `kubeadmin` or your own user account, create a new project (_microsweeper-quarkus_): 
-
-* [Tutorial: Connect to an Azure Red Hat OpenShift 4 cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-connect-cluster)
-
-* Name: microsweeper-quarkus
-
-![Screenshot](docs/create-project.png)
-
-Quarkus also offers the ability to automatically generate OpenShift resources based on sane default and user supplied configuration. The OpenShift extension is actually a wrapper extension that brings together the [kubernetes](https://quarkus.io/guides/deploying-to-kubernetes) and [container-image-s2i](https://quarkus.io/guides/container-image#s2i) extensions with defaults so that it’s easier for the user to get started with Quarkus on OpenShift.
-
-Add `quarkus-openshift` extension in Terminal:
+[Connect to the Kubernetes cluster](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#connect-to-the-cluster) using `az` command line:
 
 ```shell
-quarkus ext add openshift
+az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_NAME
 ```
 
 The output should look like:
 
 ```shell
-[SUCCESS] ✅  Extension io.quarkus:quarkus-openshift has been installed
+Merged "myAKSCluster" as current context in /Users/USERNAME/.kube/config
+```
+
+Verify the connection to your cluster using `kubectl` command line (CLI) to get a list of the cluster nodes:
+
+```shell
+kubectl get nodes
+```
+
+The output should look like:
+
+```shell
+NAME                                STATUS   ROLES   AGE   VERSION
+aks-agentpool-30709549-vmss000001   Ready    agent   12d   v1.23.8
+aks-agentpool-30709549-vmss000002   Ready    agent   12d   v1.23.8
+```
+
+Create a new `microsweeper-quarkus` namespace in your Kubernetes service:
+
+```shell
+kubectl create namespace microsweeper-quarkus
+```
+
+The output should look like:
+
+```shell
+namespace/microsweeper-quarkus created
+```
+
+> **_NOTE:_** You can set the current context to *microsweeper-quarkus* namespace using the following kubectl command:
+
+```shell
+kubectl config set-context --current --namespace=microsweeper-quarkus
+```
+
+The output should look like:
+
+```shell
+Context "MyAKSCluster" modified.
+```
+
+### 2.4. Build a Container Image and Generate Kubernetes Resources
+
+Quarkus offers the ability to automatically generate Kubernetes resources based on sane defaults and user-supplied configuration using [dekorate](https://github.com/dekorateio/dekorate/). It currently supports generating resources for vanilla [Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes#kubernetes), [OpenShift](https://quarkus.io/guides/deploying-to-kubernetes#openshift) and [Knative](https://quarkus.io/guides/deploying-to-kubernetes#knative). Developers can deploy the application to a target Kubernetes cluster by applying the generated manifests to the target cluster’s API Server.
+
+Quarkus also provides the `quarkus-container-image-jib` extension that is powered by `Jib` for performing container image builds. The major benefit of using `Jib` with Quarkus is that all the dependencies are cached in a different layer than the actual application making rebuilds really fast and small when it comes to pushing.
+
+Add the `quarkus-kubernetes` and `container-image-jib` extensions in your local terminal:
+
+```shell
+quarkus ext add kubernetes container-image-jib
+```
+
+The output should look like:
+
+```shell
+[SUCCESS] ✅  Extension io.quarkus:quarkus-kubernetes has been installed
+[SUCCESS] ✅  Extension io.quarkus:quarkus-container-image-jib has been installed
 ```
 
 Quarkus supports the notion of configuration profiles. These allows you to have multiple configurations in the same file and select between then via a profile name.
@@ -188,7 +245,7 @@ By default Quarkus has three profiles, although it is possible to use as many as
 * **test** - Activated when running tests
 * **prod** - The default profile when not running in development or test mode
 
-Let’s uncomment the following variables in `src/main/resources/application.properties`:
+Let’s add the following *Database configurations* variables in `src/main/resources/application.properties`.
 
 ```yaml
 # Database configurations
@@ -198,71 +255,132 @@ Let’s uncomment the following variables in `src/main/resources/application.pro
 %prod.quarkus.datasource.username=quarkus@microsweeper-database
 %prod.quarkus.datasource.password=r3dh4t1!
 %prod.quarkus.hibernate-orm.database.generation=drop-and-create
-
-# OpenShift configurations
-%prod.quarkus.kubernetes-client.trust-certs=true
-%prod.quarkus.kubernetes.deploy=true
-%prod.quarkus.kubernetes.deployment-target=openshift
-%prod.quarkus.openshift.build-strategy=docker
-%prod.quarkus.openshift.expose=true
 ```
 
-Before deploying the app to AZO, be sure to log in to the right project (_microsweeper-quarkus_) via `oc` command-line tool.
+Add the following *AKS configurations* variables in `src/main/resources/application.properties`. Make sure to set `load-balancer` to *service-type* to access the Microsweeper GUI externally.
 
-* [Installing the OpenShift CLI](https://docs.openshift.com/container-platform/4.10/cli_reference/openshift_cli/getting-started-cli.html)
-
-Get the token from OpenShift web consol. Then, paste the `oc login` command-line with the _token_ in Terminal.
-
-![Screenshot](docs/ocp-token-login.png)
-
-The output should look like:
-
-```shell
-Logged into "https://api.danieloh.eastus.aroapp.io:6443" as "YOUR-USERNAME" using the token provided.
-
-You have access to 68 projects, the list has been suppressed. You can list all projects with 'oc projects'
-
-Using project "microsweeper-quarkus".
+```yaml
+# AKS configurations
+%prod.quarkus.kubernetes.deployment-target=kubernetes
+%prod.quarkus.kubernetes.service-type=load-balancer
 ```
 
-Now let’s deploy the application itself. Run the following Quarkus CLI which will build and deploy using the OpenShift extension:
+You also need to specify the external container registry (e.g. _Quay.io, Azure Container Registry, DockerHub_) to push the containerized Quarkus application. In this tutorial, we'll use the [Quay.io](https://quay.io/repository/) repository. `Quay.io` is a registry for storing and building container images as well as distributing other OCI artifacts. The service is free for those who want to set up their own public repositories and available for a fee, if you want to create private repositories.
+
+> **_NOTE:_** Make sure to replace `${user.name}` with your username in [quay.io](https://quay.io/repository/) repository. 
+
+```yaml
+# Container Image Build
+%prod.quarkus.container-image.build=true
+%prod.quarkus.container-image.registry=quay.io
+%prod.quarkus.container-image.group=${user.name}
+%prod.quarkus.container-image.name=microsweeper-quarkus-aks
+%prod.quarkus.container-image.tag=1.0
+```
+
+Now let’s build the application itself. Run the following *Quarkus CLI* which will build and deploy using the Kubernetes and Jib extensions:
 
 ```shell
 quarkus build --no-tests
 ```
 
-The output should end with `BUILD SUCCESS`.
-
-Finally, make sure it’s actually done rolling out:
+The output should end with `BUILD SUCCESS`. The Kubernetes manifest files are generated in `target/kubernetes`.
 
 ```shell
-oc rollout status -w dc/microsweeper-appservice
+tree target/kubernetes 
+target/kubernetes
+├── kubernetes.json
+└── kubernetes.yml
+
+0 directories, 2 files
 ```
 
-Wait for that command to report `replication controller microsweeper-appservice-1 successfully rolled out` before continuing.
+You can verify if the container image is generated as well using `docker` or `podman` command line (CLI).
 
-Go to the `Topology View` in _OpenShift Dev Perspective_, make sure it’s done deploying (dark blue circle):
-
-![Screenshot](docs/topology-openshift.png)
-
-Click on the Route icon above (the arrow) to access the **Microsweeper** running on ARO. Then, give it try to play the mine game a few time:
-
-![Screenshot](docs/microsweeper-aro.png)
-
-Access the RESTful API (_/api/score_) to get all scores that store in the **Azure PostgreSQL database**. You need to replace with your own `ROUTE` url: 
+> **_NOTE:_** `USERNAME` should be your own username in the quay.io repository.
 
 ```shell
-http http://YOUR-ROUTE-URL/api/scoreboard
+docker images | grep microsweeper
+quay.io/USERNAME/microsweeper-quarkus-aks                                         1.0                      4a23015d6f6c   3 mins ago    413MB
+```
+
+Push the container images to an external container registry using the following command. Make sure to replace `USERNAME` with your own username.
+
+```shell
+docker push quay.io/USERNAME/microsweeper-quarkus-aks:1.0
 ```
 
 The output should look like:
 
 ```shell
+The push refers to repository [quay.io/USERNAME/microsweeper-quarkus-aks]
+dfd615499b3a: Pushed 
+56f5cf1aa271: Pushed 
+4218d39b228e: Pushed 
+b0538737ed64: Pushed 
+d13845d85ee5: Pushed 
+a73162ddb3c9: Mounted from USERNAME/quarkus-eda-demo 
+60609ec85f86: Pushed 
+f2c4302f03b8: Mounted from USERNAME/quarkus-eda-demo 
+1.0: digest: sha256:0ffd70d6d5bb3a4621c030df0d22cf1aa13990ca1880664d08967bd5bab1f2b6 size: 1995
+```
+
+Once the image is pushed, you need to make it `public` to be pulled by the Azure Kubernetes Service. Find more information [here](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/use_red_hat_quay/use-quay-manage-repo).
+
+### 2.5. Deploy a Quarkus App to AKS
+
+Deploy the Kubernetes resources using `kubectl` command line.
+
+```shell
+kubectl apply -f target/kubernetes/kubernetes.yml -n microsweeper-quarkus
+```
+
+The output should look like:
+
+```shell
+serviceaccount/microsweeper-quarkus-aks created
+service/microsweeper-quarkus-aks created
+role.rbac.authorization.k8s.io/view-secrets created
+rolebinding.rbac.authorization.k8s.io/microsweeper-quarkus-aks-view created
+rolebinding.rbac.authorization.k8s.io/microsweeper-quarkus-aks-view-secrets created
+deployment.apps/microsweeper-quarkus-aks created
+```
+
+Get the `EXTERNAL-IP` to access the Microsweeper application using the following command.
+
+```shell
+kubectl get svc -n microsweeper-quarkus
+```
+
+The output should look like:
+
+```shell
+NAME                       TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)        AGE
+microsweeper-quarkus-aks   LoadBalancer   10.0.62.249   20.237.19.191   80:30259/TCP   5m
+```
+
+Open a new web browser to typy the `EXTERNAL-IP` (e.g. _20.237.19.191_) in. Then, give it try to play the mine game a few time:
+
+![Screenshot](docs/microsweeper-aks.png)
+
+Access the RESTful API (_/api/score_) to get all scores that store in the **Azure PostgreSQL database**. You need to replace with your own `ROUTE` url: 
+
+```shell
+http EXTERNAL-IP/api/scoreboard
+```
+
+The output should look like:
+
+```shell
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+content-length: 349
+
 [
     {
         "id": 1,
         "level": "medium",
-        "name": "Twilight Chin",
+        "name": "Valiant Throat",
         "scoreId": 0,
         "success": false,
         "time": 0
@@ -270,23 +388,31 @@ The output should look like:
     {
         "id": 2,
         "level": "medium",
-        "name": "Luminous Song",
+        "name": "Peat Trader",
         "scoreId": 0,
         "success": false,
-        "time": 4
+        "time": 2
     },
     {
         "id": 3,
         "level": "medium",
-        "name": "Flax Rabbit",
+        "name": "Heather Crusher",
         "scoreId": 0,
         "success": false,
-        "time": 0
+        "time": 3
+    },
+    {
+        "id": 4,
+        "level": "medium",
+        "name": "Aquamarine Face",
+        "scoreId": 0,
+        "success": false,
+        "time": 13
     }
 ]
 ```
 
-### Connect to the Azure PostgreSQL server using Azure Cloud Shell
+### 2.6. Connect to the Azure PostgreSQL server using Azure Cloud Shell
 
 Open Azure Cloud Shell in the Azure portal by selecting the icon on the upper-left side:
 
@@ -308,75 +434,134 @@ The output should be the **same** as the above _Leaderboard_ GUI:
 
 ![Screenshot](docs/azure-cli-psql.png)
 
-**Great job!** You've successfully deployed the Quarkus app to ARO with connecting to Azure PostgreSQL server.
+**Great job!** You've successfully deployed the Quarkus app to AKS with connecting to Azure PostgreSQL server.
 
-## 3. Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift<a name="DeployServerlessFunction"></a>
+## 3. Secure Database credential to Kubernetes Secrets<a name="SecureDBCreds"></a>
 
-Quarkus provides **Funqy** extensions to create a portable Java API for deployable functions in multiple serverless platforms such as OpenShift Serverless (Knative), AWS Lambda, Azure Functions, Google Cloud Functions. The main difference between Quarkus functions on ARO and direct Azure Functions is that you can build and deploy a native executable as the serverless function for faster cold starts and tiny memory footprints.
+Quarkus includes the `kubernetes-config` extension which allows developers to use `Kubernetes ConfigMaps` and `Secrets` as a configuration source, without having to mount them into the Pod running the Quarkus application or make any other modifications to their Kubernetes Deployment.
 
-If you haven't installed the OpenShift Serverless ane Knative Serving CR yet, find more information as below:
+### 3.1. Create a Kubernetes Secret
 
-* [Installing the OpenShift Serverless Operator](https://docs.openshift.com/container-platform/4.10/serverless/install/install-serverless-operator.html)
-* [Installing Knative Serving](https://docs.openshift.com/container-platform/4.10/serverless/install/installing-knative-serving.html)
+Create a new Kubernetes Secret to store the database credential using the following `kubectl` command:
 
-You should see the deployed pods when you have successfully installed the OpenShift Serverless:
+```shell
+kubectl create secret generic db-credentials \
+  --from-literal=username=quarkus@microsweeper-database \
+  --from-literal=password='r3dh4t1!' -n microsweeper-quarkus
+```
 
-![Screenshot](docs/openshift-serverless-operator.png)
+### 3.2. Integrate Kubernetes Secrets to the Quarkus Application
 
-**Update** the following values in `src/main/resources/application.properties` to keep the existing score data and deploy the application as the serverless function:
+Add the `kubernetes-config` extension in your local terminal:
+
+```shell
+quarkus ext add kubernetes-config
+```
+
+The output should look like:
+
+```shell
+[SUCCESS] ✅  Extension io.quarkus:quarkus-kubernetes-config has been installed
+```
+
+Secure the sensitive information such as *username* and *password* to access the Azure PostgreSQL database. Currently, the credential are stored as a plain text in `application.properties` file. Update the following values in `src/main/resources/application.properties` to keep the existing score data and secure the database credential:
 
 ```yaml
+%prod.quarkus.datasource.username=${username}
+%prod.quarkus.datasource.password=${password}
 %prod.quarkus.hibernate-orm.database.generation=update
-%prod.quarkus.kubernetes.deployment-target=knative
 ```
 
-**Uncomment** the following variables in `src/main/resources/application.properties`:
+Update the container image tag to redeploy the application in `src/main/resources/application.properties`:
 
 ```yaml
-%prod.quarkus.container-image.group=microsweeper-quarkus
-%prod.quarkus.container-image.registry=image-registry.openshift-image-registry.svc:5000
+%prod.quarkus.container-image.tag=1.1
 ```
 
-_Note_ that if you want to build a native executables on `macOS`, add the following configuration to use Linux binary file format:
+Add the following variables to refer to the remote Kubernetes Secrets in `src/main/resources/application.properties`:
 
 ```yaml
-%prod.quarkus.native.container-build=true
+# Kubernetes Secret configurations
+%prod.quarkus.kubernetes-config.secrets=db-credentials
+%prod.quarkus.kubernetes-config.secrets.enabled=true
 ```
 
-Before the build, delete existing `microsweeper` application by the following `oc` command:
+### 3.3. Re-build the Quarkus application locally
+
+Re-build the application and container image locally using the following command:
 
 ```shell
-oc delete all --all
-```
-
-Build the native executables then deploy it to ARO. Run the following Quarkus CLI which will build and deploy using the OpenShift extension:
-
-```shell
-quarkus build --no-tests --native
+quarkus build --no-tests
 ```
 
 The output should end with `BUILD SUCCESS`.
 
-Go back to the _Topology_ view, edit labels to add Quarkus icon. Click on microsweeper **REV** then select **Edit Labels** in _Actions_ drop box:
+Verify if the *new* container image is generated as well using `docker` or `podman` command line (CLI).
 
-![Screenshot](docs/microsweeper-serverless.png)
-
-Add this label and click on `Save`:
-
-```yaml
-app.openshift.io/runtime=quarkus
+```shell
+docker images | grep microsweeper
+quay.io/USERNAME/microsweeper-quarkus-aks                                         1.1                      e927fd15ece3   1 mins ago    413MB
+quay.io/USERNAME/microsweeper-quarkus-aks                                         1.0                      4a23015d6f6c   9 mins ago    413MB
 ```
 
-The pod might scale down to `zero` if you didn't send traffic in `30` seconds. Let's access the Microsweeper game by clicking on the `Open URL` link. It triggers knative to spin up the pod again automatically, and will shut it down 30 seconds later:
+Push the *new* container images to an external container registry using the following command. Make sure to replace `USERNAME` with your own username.
 
-![Screenshot](docs/microsweeper-serverless-up.png)
+```shell
+docker push quay.io/USERNAME/microsweeper-quarkus-aks:1.1
+```
 
-You will see the same scores in the Leaderboard as the above scores because the Azure PostgreSQL database is running on Azure cloud:
+The output should look like:
 
-![Screenshot](docs/microsweeper-serverless-board.png)
+```shell
+The push refers to repository [quay.io/USERNAME/microsweeper-quarkus-aks]
+22023eab0cca: Pushed 
+ff886a485f2d: Pushed 
+cea2acd54a98: Pushed 
+3884e8a00916: Pushed 
+006c34f5495c: Pushed 
+a73162ddb3c9: Layer already exists 
+60609ec85f86: Layer already exists 
+f2c4302f03b8: Layer already exists 
+1.1: digest: sha256:f69bda3faf10ff25e85e5f754a1347a8d531f83e327573438279526df3a023a9 size: 1995
+```
 
-### (Optional) Delete Azure Red Hat OpenShift cluster
+### 3.4. Re-deploy the Quarkus application to AKS
 
-In case you need to delete ARO for the cost saving after the demo, follow up on this tutorial:
+To patch the existing deployment in the AKS cluster, create a `patch-deployment.yml` file in the `kube` directory.
 
-* [Tutorial: Delete an Azure Red Hat OpenShift 4 cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-delete-cluster)
+Add the following specification to the YAML file. Make sure to replace `USERNAME` with your own username.
+
+```yaml
+spec:
+  template:
+    spec:
+      containers:
+      - name: microsweeper-quarkus-aks
+        image: quay.io/USERNAME/microsweeper-quarkus-aks:1.1
+```
+
+Save the file.
+
+Patch the `microsweeper-quarkus-aks` deployment using the following `kubectl` command:
+
+```shell
+kubectl patch deployment microsweeper-quarkus-aks --patch-file kube/patch-deployment.yml -n microsweeper-quarkus
+```
+
+The output should look like:
+
+```
+deployment.apps/microsweeper-quarkus-aks patched
+```
+
+Let's go back to the Microsweeper GUI. Then, you will see the same scores in the Leaderboard as the above scores because the Azure PostgreSQL database is running on Azure cloud. Besides, the Quarkus application retrieves the database credential from *Kubernetes Secret* rather than the local file system:
+
+![Screenshot](docs/microsweeper-aks-secret.png)
+
+Try to play the minesweeper game to verify if the Quarkus application works well!!
+
+### (Optional) Delete Azure Kubernetes Service cluster
+
+In case you need to delete AKS for the cost saving after the demo, follow up on this tutorial:
+
+* [Tutorial: Delete an Azure Kubernetes Service cluster](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli#delete-the-cluster)
