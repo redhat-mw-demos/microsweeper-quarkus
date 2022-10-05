@@ -567,7 +567,6 @@ Let's go back to the Microsweeper GUI. Then, you will see the same scores in the
 >
 ```shell
 kubectl create role access-secrets --verb=get,list,watch,update,create --resource=secrets -n microsweeper-quarkus
-
 kubectl create rolebinding --role=access-secrets default-to-secrets --serviceaccount=microsweeper-quarkus:default -n microsweeper-quarkus
 ```
 
