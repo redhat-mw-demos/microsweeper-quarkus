@@ -558,6 +558,17 @@ Let's go back to the Microsweeper GUI. Then, you will see the same scores in the
 
 ![Screenshot](docs/microsweeper-aks-secret.png)
 
+> **_NOTE:_** If you have a permission error to access the Kubernetes Secret by the Quarkus application with the following error:
+>
+> _ERROR: Failed to start application (with profile prod)_ 
+> _io.fabric8.kubernetes.client.KubernetesClientException: Failure executing: GET at: https://10.0.0.1/api/v1/> namespaces/microsweeper-quarkus/secrets/db-credentials. Message: Forbidden!Configured service account doesn't have access. Service account may have been revoked. secrets "db-credentials" is forbidden: User "system:serviceaccount:microsweeper-quarkus:default" cannot get resource "secrets" in API group "" in the namespace "microsweeper-quarkus"._
+>
+> Run the following `kubectl` command:
+>
+> `kubectl create role access-secrets --verb=get,list,watch,update,create --resource=secrets -n microsweeper-quarkus`
+>
+> `kubectl create rolebinding --role=access-secrets default-to-secrets --serviceaccount=microsweeper-quarkus:default -n microsweeper-quarkus`
+
 Try to play the minesweeper game to verify if the Quarkus application works well!!
 
 ### (Optional) Delete Azure Kubernetes Service cluster
