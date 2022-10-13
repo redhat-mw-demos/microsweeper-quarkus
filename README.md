@@ -4,7 +4,7 @@ This demo uses a number of cloud technologies to implement a simple game from th
 
 Watch the demo video that walks you through the instructions step by step:
 
-[![Microsweeper Demo with Quarkus on Azure Kubernetes Service](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/AKS/docs/thumbnail.png)](https://youtu.be/zYSQdX-tVsE "Microsweeper Demo with Quarkus on Azure Kubernetes Service")
+[![Microsweeper Demo with Quarkus on Azure Kubernetes Service](https://github.com/redhat-mw-demos/microsweeper-quarkus/blob/AKS/docs/thumbnail.png)](https://youtu.be/AcQ15HHPkbE "Microsweeper Demo with Quarkus on Azure Kubernetes Service")
 
 # Table of Contents
 
