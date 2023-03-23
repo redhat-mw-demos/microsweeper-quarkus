@@ -13,7 +13,7 @@ Watch the demo video that walks you through the instructions step by step:
 3. [Evolve Serverless Functions with Quarkus on Azure Red Hat OpenShift](#DeployServerlessFunction)
 
 ![Screenshot](docs/aro-demo-arch.png)
-
+ 
 Technologies include:
 
 * JQuery-based Minesweeper written by [Nick Arocho](http://www.nickarocho.com/) and [available on GitHub](https://github.com/nickarocho/minesweeper).
