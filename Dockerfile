@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-11:1.10 AS build
+FROM registry.access.redhat.com/ubi9/openjdk-11:1.10 AS build
 
 WORKDIR /home/jboss
 
@@ -7,7 +7,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn clean compile package -DskipTests
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4 
+FROM registry.access.redhat.com/ubi9/ubi-minimal:8.4 
 
 ARG JAVA_PACKAGE=java-11-openjdk-headless
 ARG RUN_JAVA_VERSION=1.3.8
