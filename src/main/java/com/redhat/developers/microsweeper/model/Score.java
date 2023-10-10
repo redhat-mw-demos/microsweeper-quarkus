@@ -1,8 +1,7 @@
 package com.redhat.developers.microsweeper.model;
 
-import javax.persistence.Entity;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Score extends PanacheEntity {
