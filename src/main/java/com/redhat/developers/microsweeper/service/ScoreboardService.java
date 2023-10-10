@@ -2,13 +2,13 @@ package com.redhat.developers.microsweeper.service;
 
 import com.redhat.developers.microsweeper.model.Score;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 @ApplicationScoped
 public class ScoreboardService extends AbstractService {
