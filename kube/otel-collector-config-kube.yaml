@@ -1,0 +1,23 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: otel-knative-java
+spec:
+  mode: deployment
+  config: |
+    receivers:
+      zipkin:
+    processors:
+    exporters:
+      jaeger:
+        endpoint: my-jaeger-collector-headless.otel-knative-java.svc:14250
+        tls:
+          ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+      logging:
+    service:
+      pipelines:
+        traces:
+          receivers: [zipkin]
+          processors: []
+          exporters: [jaeger, logging]
