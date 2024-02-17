@@ -451,7 +451,7 @@ Create a new Kubernetes Secret to store the database credential using the follow
 
 ```shell
 kubectl create secret generic db-credentials \
-  --from-literal=username=quarkus@microsweeper-database \
+  --from-literal=username=quarkus \
   --from-literal=password='r3dh4t1!' -n microsweeper-quarkus
 ```
 
