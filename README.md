@@ -307,7 +307,7 @@ quay.io/USERNAME/microsweeper-quarkus-aks                                       
 Push the container images to an external container registry using the following command. Make sure to replace `USERNAME` with your own username.
 
 ```shell
-docker push quay.io/USERNAME/microsweeper-quarkus-aks:1.0
+docker push quay.io/USERNAME/microsweeper-quarkus-aks:3.7.3
 ```
 
 The output should look like:
@@ -421,7 +421,12 @@ Open Azure Cloud Shell in the Azure portal by selecting the icon on the upper-le
 Run the following command in the Azure Cloud Shell terminal. Replace values with `your server name` and admin user login name:
 
 ```shell
-psql --host=YOUR-POSTGRESQL-SERVER-NAME --port=5432 --username=quarkus@microsweeper-database --dbname=score
+export PGHOST=microsweeper-database.postgres.database.azure.com
+export PGUSER=quarkus
+export PGPORT=5432
+export PGDATABASE=score
+export PGPASSWORD=r3dh4t1!
+psql
 ```
 
 Key the password (`r3dh4t1!`) in the prompt. Then, execute the following query to get all scores:
