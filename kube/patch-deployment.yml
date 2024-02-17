@@ -3,4 +3,4 @@ spec:
     spec:
       containers:
       - name: microsweeper-quarkus-aks
-        image: quay.io/danieloh30/microsweeper-quarkus-aks:1.1
+        image: quay.io/danieloh30/microsweeper-quarkus-aks:3.7.3-2

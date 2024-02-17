@@ -480,7 +480,7 @@ Secure the sensitive information such as *username* and *password* to access the
 Update the container image tag to redeploy the application in `src/main/resources/application.properties`:
 
 ```yaml
-%prod.quarkus.container-image.tag=1.1
+%prod.quarkus.container-image.tag=3.7.3-2
 ```
 
 Add the following variables to refer to the remote Kubernetes Secrets in `src/main/resources/application.properties`:
@@ -505,14 +505,14 @@ Verify if the *new* container image is generated as well using `docker` or `podm
 
 ```shell
 docker images | grep microsweeper
-quay.io/USERNAME/microsweeper-quarkus-aks                                         1.1                      e927fd15ece3   1 mins ago    413MB
-quay.io/USERNAME/microsweeper-quarkus-aks                                         1.0                      4a23015d6f6c   9 mins ago    413MB
+quay.io/USERNAME/microsweeper-quarkus-aks                                         3.7.3                      e927fd15ece3   1 mins ago    413MB
+quay.io/USERNAME/microsweeper-quarkus-aks                                         3.7.3-2                    4a23015d6f6c   9 mins ago    413MB
 ```
 
 Push the *new* container images to an external container registry using the following command. Make sure to replace `USERNAME` with your own username.
 
 ```shell
-docker push quay.io/USERNAME/microsweeper-quarkus-aks:1.1
+docker push quay.io/USERNAME/microsweeper-quarkus-aks:3.7.3-2
 ```
 
 The output should look like:
@@ -542,7 +542,7 @@ spec:
     spec:
       containers:
       - name: microsweeper-quarkus-aks
-        image: quay.io/USERNAME/microsweeper-quarkus-aks:1.1
+        image: quay.io/USERNAME/microsweeper-quarkus-aks:3.7.3-2
 ```
 
 Save the file.
