@@ -128,7 +128,7 @@ Let's say that AKS is our production environment to deploy the *Microsweeper* ap
 
 **Azure Database for PostgreSQL** is a managed service to run, manage, and scale highly available PostgreSQL databases in the Azure cloud. The following quickstart shows you how to create a single Azure Database for PostgreSQL server and connect to it.
 
-[Quickstart: Create an Azure Database for PostgreSQL server by using the Azure portal](https://docs.microsoft.com/en-us/azure/postgresql/quickstart-create-server-database-portal)
+[Quickstart: Create an Azure Database for PostgreSQL - Flexible Server instance in the Azure portal](hhttps://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal)
 
 Note that be sure to key the following value in the setting:
 
@@ -154,9 +154,9 @@ export AKS_NAME=YOUR_AKS_NAME
 Create a new database called `score` by using the following command:
 
 ```shell
-az postgres db create \
+az postgres flexible-server db create \
   --resource-group $RESOURCE_GROUP \
-  --name score \
+  --database-name score \
   --server-name microsweeper-database
 ```
 
