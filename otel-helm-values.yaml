@@ -1,0 +1,33 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  otlp/2:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:55690
+
+processors:
+  batch:
+
+exporters:
+  jaeger:
+    endpoint: jaeger-all-in-one:14250
+    tls:
+      insecure: true
+  # otlp:
+  #   endpoint: otelcol:4317
+  # otlp/2:
+  #   endpoint: otelcol2:4317
+
+extensions:
+  health_check:
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp,otlp/2]
+      processors: [batch]
+      exporters: [otlp]
