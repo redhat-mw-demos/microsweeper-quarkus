@@ -14,7 +14,7 @@ Watch the demo video that walks you through the instructions step by step:
 
 ![Screenshot](docs/aks-demo-arch.png)
 
-Technologies include:
+Technologies include: 
 
 * JQuery-based Minesweeper written by [Nick Arocho](http://www.nickarocho.com/) and [available on GitHub](https://github.com/nickarocho/minesweeper).
 * Backend based on [Quarkus](https://quarkus.io) to persist scoreboard and provide a reactive frontend and backend connected to [Postgres](https://azure.microsoft.com/en-us/services/postgresql/).
