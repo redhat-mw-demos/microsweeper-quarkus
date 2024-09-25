@@ -207,7 +207,7 @@ Let’s uncomment the following variables in `src/main/resources/application.pro
 %prod.quarkus.openshift.expose=true
 ```
 
-Before deploying the app to AZO, be sure to log in to the right project (_microsweeper-quarkus_) via `oc` command-line tool.
+Before deploying the app to ARO, be sure to log in to the right project (_microsweeper-quarkus_) via `oc` command-line tool.
 
 * [Installing the OpenShift CLI](https://docs.openshift.com/container-platform/4.10/cli_reference/openshift_cli/getting-started-cli.html)
 
