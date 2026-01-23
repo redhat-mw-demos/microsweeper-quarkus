@@ -1,6 +1,6 @@
 # Red Hat Microsweeper Demo with Quarkus on Azure Kubernetes Service (AKS)
 
-This demo uses a number of cloud technologies to implement a simple game from the earlier days of computing: Minesweeper!
+This demo uses a number of cloud technologies to implement a simple game from the earlier days of computing: Minesweeper! ß
 
 Watch the demo video that walks you through the instructions step by step:
 
