@@ -11,9 +11,9 @@ on:
         required: true
         type: choice
         options:
-          - rosa
-          - aro
-          - aks
+          - ROSA
+          - ARO
+          - AKS
           - jdconf-24
           - all
 
@@ -24,10 +24,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: 
-          - rosa
-          - aro
-          - aks
+        branch:
+          - ROSA
+          - ARO
+          - AKS
           - jdconf-24
     
     steps:
@@ -126,9 +126,9 @@ jobs:
           echo "## Quarkus Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Update workflow completed for all branches:" >> $GITHUB_STEP_SUMMARY
-          echo "- rosa" >> $GITHUB_STEP_SUMMARY
-          echo "- aro" >> $GITHUB_STEP_SUMMARY
-          echo "- aks" >> $GITHUB_STEP_SUMMARY
+          echo "- ROSA" >> $GITHUB_STEP_SUMMARY
+          echo "- ARO" >> $GITHUB_STEP_SUMMARY
+          echo "- AKS" >> $GITHUB_STEP_SUMMARY
           echo "- jdconf-24" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Check the pull requests tab for any created update PRs." >> $GITHUB_STEP_SUMMARY

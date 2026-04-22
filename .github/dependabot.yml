@@ -1,21 +1,21 @@
 # Dependabot configuration for Quarkus updates across multiple branches
 version: 2
 updates:
-  # Monitor rosa branch for Maven dependencies
+  # Monitor ROSA branch for Maven dependencies
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    target-branch: "rosa"
+    target-branch: "ROSA"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
       - "quarkus-update"
-      - "rosa"
+      - "ROSA"
     commit-message:
-      prefix: "[rosa]"
+      prefix: "[ROSA]"
       include: "scope"
     groups:
       quarkus:
@@ -26,21 +26,21 @@ updates:
           - "minor"
           - "patch"
 
-  # Monitor aro branch for Maven dependencies
+  # Monitor ARO branch for Maven dependencies
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    target-branch: "aro"
+    target-branch: "ARO"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
       - "quarkus-update"
-      - "aro"
+      - "ARO"
     commit-message:
-      prefix: "[aro]"
+      prefix: "[ARO]"
       include: "scope"
     groups:
       quarkus:
@@ -51,21 +51,21 @@ updates:
           - "minor"
           - "patch"
 
-  # Monitor aks branch for Maven dependencies
+  # Monitor AKS branch for Maven dependencies
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    target-branch: "aks"
+    target-branch: "AKS"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
       - "quarkus-update"
-      - "aks"
+      - "AKS"
     commit-message:
-      prefix: "[aks]"
+      prefix: "[AKS]"
       include: "scope"
     groups:
       quarkus:

@@ -5,9 +5,9 @@ This repository includes automated Quarkus update mechanisms for multiple branch
 ## Branches Monitored
 
 The following branches are monitored for Quarkus updates:
-- `rosa` - Red Hat OpenShift Service on AWS
-- `aro` - Azure Red Hat OpenShift
-- `aks` - Azure Kubernetes Service
+- `ROSA` - Red Hat OpenShift Service on AWS
+- `ARO` - Azure Red Hat OpenShift
+- `AKS` - Azure Kubernetes Service
 - `jdconf-24` - JDConf 2024 Demo
 
 ## Automation Components
@@ -64,7 +64,7 @@ You can manually trigger the Quarkus update workflow:
 PRs created by automation will have the following labels:
 - `dependencies` - Indicates dependency update
 - `quarkus-update` - Specific to Quarkus updates
-- `<branch-name>` - Branch-specific label (rosa, aro, aks, jdconf-24)
+- `<branch-name>` - Branch-specific label (ROSA, ARO, AKS, jdconf-24)
 - `automated` - Indicates automated PR (GitHub Actions only)
 
 ## Reviewing Updates
