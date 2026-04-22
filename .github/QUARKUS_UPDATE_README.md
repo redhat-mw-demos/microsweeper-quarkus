@@ -22,6 +22,7 @@ Dependabot automatically monitors Maven dependencies and creates pull requests f
 - Creates separate PRs for each branch
 - Labels PRs with branch-specific tags
 - Limits to 10 open PRs per branch
+- **Auto-merges Quarkus updates after tests pass**
 
 **Dependency Groups:**
 - All `io.quarkus*` packages
@@ -39,6 +40,7 @@ A custom workflow that checks for Quarkus updates and creates PRs automatically.
 - Updates `pom.xml` automatically
 - Runs tests before creating PR
 - Creates detailed PRs with release notes
+- **Auto-merges PRs after successful tests**
 
 **Workflow Steps:**
 1. Checkout the target branch
@@ -48,6 +50,8 @@ A custom workflow that checks for Quarkus updates and creates PRs automatically.
 5. Update version if newer available
 6. Run tests (continues on error)
 7. Create pull request with detailed information
+8. Enable auto-merge on the PR
+9. Automatically merge after checks pass
 
 ## Manual Triggering
 
@@ -59,6 +63,17 @@ You can manually trigger the Quarkus update workflow:
 4. Choose target branch or select "all" for all branches
 5. Click **Run workflow** button
 
+### 3. Dependabot Auto-Merge Workflow (`.github/workflows/dependabot-auto-merge.yml`)
+
+Automatically approves and merges Dependabot PRs for Quarkus dependencies.
+
+**Features:**
+- Triggers on Dependabot PR creation
+- Automatically approves Quarkus-related PRs
+- Enables auto-merge
+- Adds informative comment to PR
+- Only merges after all checks pass
+
 ## Pull Request Labels
 
 PRs created by automation will have the following labels:
@@ -66,21 +81,48 @@ PRs created by automation will have the following labels:
 - `quarkus-update` - Specific to Quarkus updates
 - `<branch-name>` - Branch-specific label (ROSA, ARO, AKS, jdconf-24)
 - `automated` - Indicates automated PR (GitHub Actions only)
+- `automerge` - Indicates PR will be auto-merged
 
-## Reviewing Updates
+## Auto-Merge Behavior
 
-When a Quarkus update PR is created:
+### How Auto-Merge Works
 
-1. **Review the changes** in `pom.xml`
-2. **Check the release notes** linked in the PR description
-3. **Review test results** from the workflow
-4. **Test locally** if needed:
+1. **PR Creation**: Workflow or Dependabot creates a PR
+2. **Tests Run**: Automated tests execute
+3. **Auto-Approval**: PR is automatically approved (Dependabot PRs only)
+4. **Auto-Merge Enabled**: Merge is scheduled after checks pass
+5. **Automatic Merge**: PR merges when all checks are green
+6. **Branch Cleanup**: PR branch is automatically deleted
+
+### When Auto-Merge Happens
+
+✅ **Auto-merged:**
+- Quarkus platform updates (minor/patch versions)
+- Quarkiverse extension updates
+- All tests pass successfully
+
+⚠️ **Manual review needed:**
+- Major version updates
+- Test failures
+- Merge conflicts
+
+## Reviewing Updates (Optional)
+
+While PRs auto-merge, you can still review them before merge:
+
+1. **Monitor PR creation** via GitHub notifications
+2. **Review changes** in `pom.xml` if desired
+3. **Check release notes** linked in PR description
+4. **Disable auto-merge** if manual review needed:
+   ```bash
+   gh pr merge --disable-auto <pr-number>
+   ```
+5. **Test locally** if concerned:
    ```bash
    git fetch origin
    git checkout <pr-branch>
    mvn clean verify
    ```
-5. **Merge** when satisfied with the update
 
 ## Configuration
 

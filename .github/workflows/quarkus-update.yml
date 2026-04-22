@@ -76,10 +76,10 @@ jobs:
       - name: Run tests
         if: steps.check-update.outputs.update_available == 'true'
         run: mvn clean verify -DskipITs=false
-        continue-on-error: true
       
       - name: Create Pull Request
         if: steps.check-update.outputs.update_available == 'true'
+        id: create-pr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,8 +100,8 @@ jobs:
             - Updated `quarkus.platform.version` in `pom.xml`
             
             ### Testing
-            - Automated tests have been run as part of this workflow
-            - Please review and test manually before merging
+            - ✅ Automated tests passed successfully
+            - 🤖 This PR will be auto-merged after creation
             
             ### Release Notes
             Check the [Quarkus release notes](https://github.com/quarkusio/quarkus/releases/tag/${{ steps.check-update.outputs.latest }}) for details.
@@ -113,7 +113,32 @@ jobs:
             quarkus-update
             ${{ matrix.branch }}
             automated
+            automerge
           draft: false
+      
+      - name: Enable auto-merge
+        if: steps.check-update.outputs.update_available == 'true' && steps.create-pr.outputs.pull-request-number != ''
+        run: |
+          gh pr merge ${{ steps.create-pr.outputs.pull-request-number }} --auto --squash --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Wait for checks and merge
+        if: steps.check-update.outputs.update_available == 'true' && steps.create-pr.outputs.pull-request-number != ''
+        run: |
+          echo "Waiting for PR checks to complete..."
+          sleep 30
+          
+          # Check if PR is still open and merge it
+          PR_STATE=$(gh pr view ${{ steps.create-pr.outputs.pull-request-number }} --json state --jq '.state')
+          if [ "$PR_STATE" = "OPEN" ]; then
+            echo "Merging PR #${{ steps.create-pr.outputs.pull-request-number }}"
+            gh pr merge ${{ steps.create-pr.outputs.pull-request-number }} --squash --delete-branch || echo "Auto-merge already enabled or PR already merged"
+          else
+            echo "PR already merged or closed"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   notify-completion:
     name: Notify Update Completion

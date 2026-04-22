@@ -1,0 +1,60 @@
+name: Dependabot Auto-Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Auto-merge Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Enable auto-merge for Dependabot PRs
+        if: |
+          contains(steps.metadata.outputs.dependency-names, 'io.quarkus') ||
+          contains(steps.metadata.outputs.dependency-names, 'io.quarkiverse')
+        run: |
+          gh pr merge --auto --squash "$PR_URL"
+          echo "✅ Auto-merge enabled for Dependabot PR"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Approve PR
+        if: |
+          contains(steps.metadata.outputs.dependency-names, 'io.quarkus') ||
+          contains(steps.metadata.outputs.dependency-names, 'io.quarkiverse')
+        run: |
+          gh pr review --approve "$PR_URL"
+          echo "✅ PR approved automatically"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Comment on PR
+        if: |
+          contains(steps.metadata.outputs.dependency-names, 'io.quarkus') ||
+          contains(steps.metadata.outputs.dependency-names, 'io.quarkiverse')
+        run: |
+          gh pr comment "$PR_URL" --body "🤖 **Auto-merge enabled**
+
+          This Quarkus dependency update has been automatically approved and will be merged once all checks pass.
+          
+          - Dependency: ${{ steps.metadata.outputs.dependency-names }}
+          - Update type: ${{ steps.metadata.outputs.update-type }}
+          "
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
