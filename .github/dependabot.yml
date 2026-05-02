@@ -1,4 +1,5 @@
 # Dependabot configuration for Quarkus updates across multiple branches
+# Last triggered: 2026-05-02
 version: 2
 updates:
   # Monitor ROSA branch for Maven dependencies
