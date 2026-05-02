@@ -1,4 +1,5 @@
 # Dependabot configuration for Quarkus updates across multiple branches
+# Last triggered: 2026-05-02
 version: 2
 updates:
   # Monitor ROSA branch for Maven dependencies
@@ -10,10 +11,6 @@ updates:
       time: "09:00"
     target-branch: "ROSA"
     open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "quarkus-update"
-      - "ROSA"
     commit-message:
       prefix: "[ROSA]"
       include: "scope"
@@ -35,10 +32,6 @@ updates:
       time: "09:00"
     target-branch: "ARO"
     open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "quarkus-update"
-      - "ARO"
     commit-message:
       prefix: "[ARO]"
       include: "scope"
@@ -60,10 +53,6 @@ updates:
       time: "09:00"
     target-branch: "AKS"
     open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "quarkus-update"
-      - "AKS"
     commit-message:
       prefix: "[AKS]"
       include: "scope"
@@ -85,10 +74,6 @@ updates:
       time: "09:00"
     target-branch: "jdconf-24"
     open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "quarkus-update"
-      - "jdconf-24"
     commit-message:
       prefix: "[jdconf-24]"
       include: "scope"
@@ -100,4 +85,3 @@ updates:
         update-types:
           - "minor"
           - "patch"
-
