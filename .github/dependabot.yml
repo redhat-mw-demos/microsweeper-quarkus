@@ -1,0 +1,103 @@
+# Dependabot configuration for Quarkus updates across multiple branches
+version: 2
+updates:
+  # Monitor ROSA branch for Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "ROSA"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "quarkus-update"
+      - "ROSA"
+    commit-message:
+      prefix: "[ROSA]"
+      include: "scope"
+    groups:
+      quarkus:
+        patterns:
+          - "io.quarkus*"
+          - "io.quarkiverse*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Monitor ARO branch for Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "ARO"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "quarkus-update"
+      - "ARO"
+    commit-message:
+      prefix: "[ARO]"
+      include: "scope"
+    groups:
+      quarkus:
+        patterns:
+          - "io.quarkus*"
+          - "io.quarkiverse*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Monitor AKS branch for Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "AKS"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "quarkus-update"
+      - "AKS"
+    commit-message:
+      prefix: "[AKS]"
+      include: "scope"
+    groups:
+      quarkus:
+        patterns:
+          - "io.quarkus*"
+          - "io.quarkiverse*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Monitor jdconf-24 branch for Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "jdconf-24"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "quarkus-update"
+      - "jdconf-24"
+    commit-message:
+      prefix: "[jdconf-24]"
+      include: "scope"
+    groups:
+      quarkus:
+        patterns:
+          - "io.quarkus*"
+          - "io.quarkiverse*"
+        update-types:
+          - "minor"
+          - "patch"
+
