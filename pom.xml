@@ -17,7 +17,7 @@
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.2.3</surefire-plugin.version>
     <quarkus-amazon-services.version>3.18.0</quarkus-amazon-services.version>
-    <awssdk.testcontainers.version>1.12.57</awssdk.testcontainers.version>
+    <awssdk.testcontainers.version>1.12.797</awssdk.testcontainers.version>
   </properties>
 
   <dependencyManagement>
