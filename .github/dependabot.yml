@@ -1,13 +1,38 @@
-# Dependabot configuration for Quarkus updates across multiple branches
-# Last triggered: 2026-05-02
 version: 2
 updates:
+  # Monitor main branch for Maven dependencies
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+    target-branch: "main"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "[main]"
+      include: "scope"
+    groups:
+      quarkus:
+        patterns:
+          - "io.quarkus*"
+          - "io.quarkiverse*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+
   # Monitor ROSA branch for Maven dependencies
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "09:00"
     target-branch: "ROSA"
     open-pull-requests-limit: 10
@@ -20,6 +45,14 @@ updates:
           - "io.quarkus*"
           - "io.quarkiverse*"
         update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins*"
+        update-types:
+          - "major"
           - "minor"
           - "patch"
 
@@ -27,8 +60,7 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "09:00"
     target-branch: "ARO"
     open-pull-requests-limit: 10
@@ -41,6 +73,14 @@ updates:
           - "io.quarkus*"
           - "io.quarkiverse*"
         update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins*"
+        update-types:
+          - "major"
           - "minor"
           - "patch"
 
@@ -48,8 +88,7 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "09:00"
     target-branch: "AKS"
     open-pull-requests-limit: 10
@@ -62,6 +101,14 @@ updates:
           - "io.quarkus*"
           - "io.quarkiverse*"
         update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins*"
+        update-types:
+          - "major"
           - "minor"
           - "patch"
 
@@ -69,8 +116,7 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "09:00"
     target-branch: "jdconf-24"
     open-pull-requests-limit: 10
@@ -83,6 +129,13 @@ updates:
           - "io.quarkus*"
           - "io.quarkiverse*"
         update-types:
+          - "major"
           - "minor"
           - "patch"
-
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
